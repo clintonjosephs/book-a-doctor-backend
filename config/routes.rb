@@ -9,5 +9,7 @@ Rails.application.routes.draw do
   namespace :v1, defaults: { format: 'json' } do
     post 'users/login' => 'users#login'
     post 'users/signup' => 'users#signup'
+    resources :doctors, only: [:new, :destroy, :show, :index]
+    resources :appointments, only: [:new, :destroy, :index]
   end
 end
