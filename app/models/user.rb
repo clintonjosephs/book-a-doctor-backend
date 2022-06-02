@@ -7,4 +7,7 @@ class User < ApplicationRecord
   # relationships
   has_one_attached :image, dependent: :destroy
   has_many :appointments, dependent: :destroy
+
+  # validations
+  validates :name, presence: true, length: { maximum: 30 }
 end
