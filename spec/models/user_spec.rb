@@ -17,8 +17,23 @@ RSpec.describe User, type: :model do
     expect(subject).to_not be_valid
   end
 
+  it 'is not valid without a password less than 6 characters' do
+    subject.password = 'a' * 4
+    expect(subject).to_not be_valid
+  end
+
+  it 'is not valid without a password more than 20 characters' do
+    subject.password = 'a' * 30
+    expect(subject).to_not be_valid
+  end
+
   it 'is not valid without a name' do
     subject.name = nil
+    expect(subject).to_not be_valid
+  end
+
+  it 'is not valid without a name length less than 3 characteres ' do
+    subject.name = 'a'
     expect(subject).to_not be_valid
   end
 
