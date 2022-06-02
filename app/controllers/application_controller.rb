@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   #   protect_from_forgery with: :exception
+  include RecordNotFound
 
   before_action :update_allowed_parameters, if: :devise_controller?
 
