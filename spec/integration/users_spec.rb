@@ -28,7 +28,7 @@ describe 'Users Login API' do
                     let(:params) {{ email: 'johndoe@gmail.com', password: 'password' }}
                     run_test! do |response|
                         data = JSON.parse(response.body)
-                        expect(data['error_message'][0]).to eq('User does not exit')
+                        expect(data['error_message'][0]).to eq('User does not exist')
                     end
                 end
 
