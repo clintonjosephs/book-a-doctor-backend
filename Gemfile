@@ -73,3 +73,5 @@ group :development do
   gem 'rspec-rails'
   gem 'webdrivers'
 end
+
+gem 'jsonapi-serializer', '~> 2.2'

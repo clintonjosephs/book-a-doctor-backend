@@ -11,8 +11,9 @@ class V1::UsersController < ApplicationController
       if Password.new(@user.encrypted_password) == params[:password]
         token = JsonWebToken.encode(user_id: @user.id)
         time = Time.now + 24.hours.to_i
-        render json: { token: token, exp: time.strftime('%m-%d-%Y %H:%M'),
-                       user_details: @user }, status: :ok
+        render json: { token: token,
+                       exp: time.strftime('%m-%d-%Y %H:%M'),
+                       user_details: UserSerializer.new(@user).serializable_hash[:data][:attributes] }, status: :ok
       else
         render json: { error: 'unauthorized', error_message: ['invalid password'] }, status: :unauthorized
       end
@@ -26,8 +27,9 @@ class V1::UsersController < ApplicationController
     if @user.save
       token = JsonWebToken.encode(user_id: @user.id)
       time = Time.now + 24.hours.to_i
-      render json: { token: token, exp: time.strftime('%m-%d-%Y %H:%M'),
-                     user_details: @user }, status: :ok
+      render json: { token: token,
+                     exp: time.strftime('%m-%d-%Y %H:%M'),
+                     user_details: UserSerializer.new(@user).serializable_hash[:data][:attributes] }, status: :ok
     else
       render json: { error: 'unauthorized', error_message: @user.errors }, status: :unauthorized
     end
@@ -40,6 +42,6 @@ class V1::UsersController < ApplicationController
   end
 
   def signup_params
-    params.permit(:name, :image, :email, :password, :password_confirmation)
+    params.permit(:name, :email, :password, :password_confirmation, :image, :image_url)
   end
 end
