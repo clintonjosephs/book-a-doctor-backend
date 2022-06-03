@@ -40,6 +40,6 @@ class V1::UsersController < ApplicationController
   end
 
   def signup_params
-    params.permit(:name, :image, :email, :password, :password_confirmation)
+    params.permit(:name, :image, :email, :password, :password_confirmation, :role)
   end
 end
