@@ -3,21 +3,21 @@ require 'swagger_helper'
 # rubocop:disable Metrics/BlockLength
 RSpec.describe 'v1/users', type: :request do
   path '/v1/users/signup' do
-    post('signup user') do
-      tags 'SignUp'
-      produces 'application/json'
-      parameter name: :name, in: :query, type: :string, required: true
-      parameter name: :email, in: :query, type: :string, required: true
-      parameter name: :password, in: :query, type: :string, required: true
+    post 'Creates a user' do
+      tags 'Users'
+      consumes 'application/json', 'application/xml'
+      parameter name: :user, in: :body, schema: {
+        type: :object,
+        properties: {
+          name: { type: :string },
+          email: { type: :string },
+          password: { type: :string }
+        },
+        required: %w[name email password]
+      }
 
-      response(200, 'user created') do
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+      response '200', 'user created' do
+        let(:user) { { name: 'John Doe', email: 'test@gmail.com', password: '123456' } }
         schema type: :object,
                properties: {
                  token: { type: :string },
@@ -35,22 +35,17 @@ RSpec.describe 'v1/users', type: :request do
                }
         run_test!
       end
-      response '401', 'Unauthorized - user not created' do
-        after do |example|
-          example.metadata[:response][:content] = {
-            'application/json' => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+
+      response '401', 'invalid request' do
+        let(:user) { { name: 'foo' } }
         schema type: :object,
                properties: {
                  error: { type: :string },
                  error_message: { type: :object,
                                   properties: {
-                                    email: { type: :string },
-                                    password: { type: :string },
-                                    name: { type: :string }
+                                    email: { type: :array },
+                                    password: { type: :array },
+                                    name: { type: :array }
                                   } }
 
                }
