@@ -7,8 +7,8 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 admin_user = User.create(name: "Admin User", email: "admin@microverse.com", password: "password", role: "admin")
-view_user1 = User.create(name: "View User", email: "user@microverse.com", password: "password")
-view_user2 = User.create(name: "John", email: "john@microverse.com", password: "password")
+view_user1 = User.create!(name: "View User", email: "user@microverse.com", password: "password")
+view_user2 = User.create!(name: "John", email: "john@microverse.com", password: "password")
 
 admin_user.image.attach(io: File.open("#{Rails.root}/public/users/194934.png"), filename: '194934.png', content_type: 'image/png')
 view_user1.image.attach(io: File.open("#{Rails.root}/public/users/194935.png"), filename: '194935.png', content_type: 'image/png')
