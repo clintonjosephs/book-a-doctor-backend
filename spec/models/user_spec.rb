@@ -37,8 +37,8 @@ RSpec.describe User, type: :model do
     expect(subject).to_not be_valid
   end
 
-  it 'is not valid if name length is more than 30 characters' do
-    subject.name = 'a' * 40
+  it 'is not valid if name length is more than 150 characters' do
+    subject.name = 'a' * 160
     expect(subject).to_not be_valid
   end
 

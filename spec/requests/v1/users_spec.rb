@@ -4,21 +4,20 @@ RSpec.describe 'v1/users/signup', type: :request do
   describe 'POST /create' do
     context 'with valid parameters' do
       it 'return the token and user info' do
-        post v1_users_signup_path, params: { name: 'test', email: 'test@test.com', password: 'helloWORLD', role: 'admin' }
+        post v1_users_signup_path, params: { name: 'test', email: 'test@test.com', password: 'helloWORLD' }
         body = response.parsed_body
         expect(body['token']).to_not be nil
         expect(body['exp']).to_not be nil
         expect(body['user_details']).to_not be nil
         expect(body['user_details']['email']).to eq('test@test.com')
         expect(body['user_details']['name']).to eq('test')
-        expect(body['user_details']['role']).to eq('admin')
       end
     end
 
     context 'with invalid parameters : User with the same email already created' do
       it 'return message error' do
-        user = User.create(name: 'test', email: 'test@test.com', password: 'helloWORLD', role: 'admin')
-        post v1_users_signup_path, params: { name: 'test', email: 'test@test.com', password: 'helloWORLD', role: 'admin' }
+        user = User.create(name: 'test', email: 'test@test.com', password: 'helloWORLD')
+        post v1_users_signup_path, params: { name: 'test', email: 'test@test.com', password: 'helloWORLD' }
         body = response.parsed_body
         expect(body['error']).to eq('unauthorized')
         expect(body['error_message']['email']).to eq(['has already been taken'])
@@ -28,7 +27,7 @@ RSpec.describe 'v1/users/signup', type: :request do
 
     context 'with invalid parameters : Name is nil' do
       it 'return message error' do
-        post v1_users_signup_path, params: { name: nil, email: 'test@test.com', password: 'helloWORLD', role: 'admin' }
+        post v1_users_signup_path, params: { name: nil, email: 'test@test.com', password: 'helloWORLD' }
         body = response.parsed_body
         expect(body['error']).to eq('unauthorized')
         expect(body['error_message']['name']).to eq(['can\'t be blank', 'is too short (minimum is 3 characters)'])
@@ -37,7 +36,7 @@ RSpec.describe 'v1/users/signup', type: :request do
 
     context 'with invalid parameters : Email is nil' do
       it 'return message error' do
-        post v1_users_signup_path, params: { name: 'test', email: nil, password: 'helloWORLD', role: 'admin' }
+        post v1_users_signup_path, params: { name: 'test', email: nil, password: 'helloWORLD' }
         body = response.parsed_body
         expect(body['error']).to eq('unauthorized')
         expect(body['error_message']['email']).to eq(['can\'t be blank'])
@@ -46,7 +45,7 @@ RSpec.describe 'v1/users/signup', type: :request do
 
     context 'with invalid parameters : Password is nil' do
       it 'return message error' do
-        post v1_users_signup_path, params: { name: 'test', email: 'test@test.com', password: '', role: 'admin' }
+        post v1_users_signup_path, params: { name: 'test', email: 'test@test.com', password: '' }
         body = response.parsed_body
         expect(body['error']).to eq('unauthorized')
         expect(body['error_message']['password']).to eq(['can\'t be blank', 'is too short (minimum is 6 characters)'])
@@ -56,15 +55,13 @@ RSpec.describe 'v1/users/signup', type: :request do
     context 'with more parameters :' do
       it 'return the token and user info, others parameters are ignored' do
         post v1_users_signup_path,
-             params: { name: 'test', email: 'test@test.com', password: 'helloWORLD', confirm_password: 'hello',
-                       role: 'admin' }
+             params: { name: 'test', email: 'test@test.com', password: 'helloWORLD', confirm_password: 'hello' }
         body = response.parsed_body
         expect(body['token']).to_not be nil
         expect(body['exp']).to_not be nil
         expect(body['user_details']).to_not be nil
         expect(body['user_details']['email']).to eq('test@test.com')
         expect(body['user_details']['name']).to eq('test')
-        expect(body['user_details']['role']).to eq('admin')
         expect(body['user_details']['confirm_password']).to be nil
       end
     end

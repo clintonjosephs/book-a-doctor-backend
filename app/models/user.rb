@@ -9,6 +9,6 @@ class User < ApplicationRecord
   has_many :appointments, dependent: :destroy
 
   # validations
-  validates :name, presence: true, length: { in: 3..30 }
+  validates :name, presence: true, length: { in: 3..150 }
   validates :password, presence: true, length: { in: 6..20 }
 end
