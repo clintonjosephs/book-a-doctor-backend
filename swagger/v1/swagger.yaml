@@ -1,0 +1,82 @@
+---
+swagger: '2.0'
+info:
+  title: Book-a-doctor-api-v1
+  version: v1
+paths:
+  "/v1/doctors/{id}":
+    get:
+      summary: Retrieves a doctor
+      tags:
+      - Doctors
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: id
+        in: path
+        type: string
+        required: true
+      responses:
+        '200':
+          description: name found
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+              city:
+                type: string
+              specialization:
+                type: string
+              cost_per_day:
+                type: integer
+              description:
+                type: string
+            required:
+            - id
+            - name
+            - city
+            - specialization
+            - cost_per_day
+            - description
+        '404':
+          description: doctor not found
+  "/v1/users/login":
+    post:
+      summary: Login to get user details and jwt token
+      tags:
+      - Users
+      consumes:
+      - application/json
+      parameters:
+      - name: params
+        in: body
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            password:
+              type: string
+          require:
+          - email
+          - password
+      responses:
+        '401':
+          description: Invalid password
+        '200':
+          description: user logged in
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3001
+securityDefinitions:
+  JWT:
+    description: the jwt for API auth
+    type: apiKey
+    name: Authorization
+    in: header
