@@ -18,7 +18,7 @@ class V1::UsersController < ApplicationController
         render json: { error: 'unauthorized', error_message: ['invalid password'] }, status: :unauthorized
       end
     else
-      render json: { error: 'unauthorized', error_message: @user.errors }, status: :unauthorized
+      render json: { error: 'unauthorized', error_message: ['User does not exit'] }, status: :unauthorized
     end
   end
 
