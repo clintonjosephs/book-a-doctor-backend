@@ -3,7 +3,7 @@ class V1::DoctorsController < ApplicationController
 
   def show
     @doctor = Doctor.find(params[:id])
-    render json: @doctor, status: :ok
+    render json: DoctorSerializer.new(@doctor).serializable_hash[:data][:attributes], status: :ok
   end
 
   def new; end
