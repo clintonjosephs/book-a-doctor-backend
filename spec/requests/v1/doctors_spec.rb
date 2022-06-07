@@ -1,20 +1,36 @@
 require 'rails_helper'
 
 RSpec.describe 'V1::Doctors', type: :request do
+  include RequestSpecHelper
+  let(:access_token) { confirm_and_login_user }
+
   describe 'GET /index' do
-    describe 'GET /doctors/:id' do
-      before do
-        doctor1 = Doctor.create(name: 'Doctor 2', city: 'Skopje', specialization: 'nervs', cost_per_day: 30, description: 'h
-          eev ev ew v ewvewv')
+    pending "add some examples (or delete) #{__FILE__}"
+  end
 
-        get "/v1/doctors/#{doctor1.id}"
-      end
+  describe 'GET /doctors/:id' do
+    before do
+      doctor1 = Doctor.create(name: 'Doctor 2', city: 'Skopje', specialization: 'nervs', cost_per_day: 30, description: 'h
+        eev ev ew v ewvewv')
+      get "/v1/doctors/#{doctor1.id}", headers: { 'Authorization' => "Bearer #{access_token}" }
+    end
 
-      it 'returns the doctors with selected id' do
-        json = JSON.parse(response.body)
-        expect(json['name']).to eq('Doctor 2')
-        expect(response).to have_http_status(:ok)
-      end
+    it 'returns the doctors with selected id' do
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe 'POST v1/doctors' do
+    it 'creates a doctor' do
+      post '/v1/doctors', params: { doctor: {
+        name: 'Doctor 2',
+        city: 'Skopje',
+        specialization: 'nervs',
+        cost_per_day: 30,
+        description: 'description'
+      } }, headers: { 'Authorization' => "Bearer #{access_token}" }
+
+      expect(response).to have_http_status(:created)
     end
   end
 end
