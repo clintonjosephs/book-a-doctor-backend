@@ -10,7 +10,7 @@ RSpec.describe 'v1/doctors', type: :request do
   describe 'doctorsAPI' do
     before(:all) do
       FactoryBot.create(:doctor)
-      FactoryBot.create(:doctor) 
+      FactoryBot.create(:doctor)
     end
 
     path '/v1/doctors/{id}' do
@@ -87,36 +87,36 @@ RSpec.describe 'v1/doctors', type: :request do
       consumes 'application/json', 'application/xml'
       security [Bearer: {}]
       parameter name: :Authorization, in: :header, type: :string
-  
-      response '200', 'All doctors fetched' do
-        schema type: :object, 
-        properties: {
-          message: { type: :array },
-          data: { type: :array,
-                          properties: {
-                            id: { type: :integer },
-                            name: { type: :string },
-                            city: { type: :string },
-                            specialization: { type: :string },
-                            costPerDay: { type: :integer },
-                            imageUrl: { type: :string },
-                            description: { type: :string }
-                          } }
 
-        }
+      response '200', 'All doctors fetched' do
+        schema type: :object,
+               properties: {
+                 message: { type: :array },
+                 data: { type: :array,
+                         properties: {
+                           id: { type: :integer },
+                           name: { type: :string },
+                           city: { type: :string },
+                           specialization: { type: :string },
+                           costPerDay: { type: :integer },
+                           imageUrl: { type: :string },
+                           description: { type: :string }
+                         } }
+
+               }
         run_test! do |response|
           json = JSON.parse(response.body)
           expect(json['data'].length).to be >= 2
-          expect(json['message']).to eq(["All doctors loaded"])
+          expect(json['message']).to eq(['All doctors loaded'])
         end
       end
 
       response '201', 'No doctors found' do
         schema type: :object,
-          properties: {
-            error: { type: :string },
-            error_message: { type: :array }
-          }
+               properties: {
+                 error: { type: :string },
+                 error_message: { type: :array }
+               }
       end
     end
   end

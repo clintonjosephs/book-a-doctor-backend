@@ -6,21 +6,21 @@ class V1::DoctorsController < ApplicationController
     @doctors = Doctor.all
     @serialized_doctors = DoctorSerializer.new(@doctors).serializable_hash[:data]
 
-    if !@serialized_doctors.empty?
+    if @serialized_doctors.empty?
+      render json: { error: 'not found', error_message: ['No doctors found'] }, status: :not_found
+    else
       @serialized_doctors.each do |doctor|
         @response << {
           id: doctor[:id],
-          name: doctor[:attributes][:name], 
-          city: doctor[:attributes][:city], 
+          name: doctor[:attributes][:name],
+          city: doctor[:attributes][:city],
           specialization: doctor[:attributes][:specialization],
           costPerDay: doctor[:attributes][:cost_per_day],
           description: doctor[:attributes][:description],
-          imageUrl: doctor[:attributes][:image_url],
+          imageUrl: doctor[:attributes][:image_url]
         }
       end
-      render json: { data: @response, message: ['All doctors loaded']} , status: :ok
-    else
-      render json: {error: 'not found', error_message: ['No doctors found']} , status: :not_found
+      render json: { data: @response, message: ['All doctors loaded'] }, status: :ok
     end
   end
 
