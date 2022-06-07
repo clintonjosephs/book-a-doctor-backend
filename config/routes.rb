@@ -6,6 +6,6 @@ Rails.application.routes.draw do
     post 'users/login' => 'users#login'
     post 'users/signup' => 'users#signup'
     resources :doctors, only: [:create, :destroy, :show, :index]
-    resources :appointments, only: [:new, :destroy, :index]
+    resources :appointments, only: [:create, :destroy, :index]
   end
 end
