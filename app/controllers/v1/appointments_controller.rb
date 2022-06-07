@@ -8,11 +8,11 @@ class V1::AppointmentsController < ApplicationController
   def create
     appointment = Appointment.new(appointment_params)
     if appointment.save
-      render json: { doctor_id: appointment.doctor_id,
-                     date_of_appointment: appointment.date_of_appointment.strftime('%A, %d %B %Y') },
-             status: :created
+      response = { doctor_id: appointment.doctor_id,
+                   date_of_appointment: appointment.date_of_appointment.strftime('%A, %d %B %Y') }
+      render json: { data: response, message: 'Appointment created' }, status: :created
     else
-      render json: appointment.errors.full_messages, status: :unprocessable_entity
+      render json: { error: 'forbidden', error_message: appointment.errors }, status: :forbidden
     end
   end
 
