@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :doctor do
-    name { 'MyString' }
-    city { 'MyString' }
-    specialization { 'MyString' }
-    cost_per_day { 1 }
-    description { 'MyText' }
+    name { Faker::Name.name }
+    city { Faker::Address.city }
+    specialization { Faker::Job.field }
+    cost_per_day { Faker::Number.number(digits: 2) }
+    description { Faker::Lorem.paragraph }
   end
 end
