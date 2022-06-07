@@ -9,6 +9,13 @@ RSpec.describe Appointment, type: :model do
     expect(subject).to be_valid
   end
 
+  it 'that appointment belongs to user and doctor' do
+    subject.save
+    expect(user.appointments).to eq([subject])
+    expect(doctor.appointments).to eq([subject])
+    subject.destroy
+  end
+
   it 'is not valid without a date_of_appointment' do
     subject.date_of_appointment = nil
     expect(subject).to_not be_valid
