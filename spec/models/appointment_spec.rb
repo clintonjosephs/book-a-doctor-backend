@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Appointment, type: :model do
   let(:user) { User.create(name: 'Ally', email: 'test@test.com', password: '123456') }
-  let(:doctor) { create(:doctor) }
+  let(:doctor) do
+    Doctor.create(name: 'Dr. John Doe', city: 'New York',
+                  specialization: 'Cardiology', cost_per_day: 100, description: 'Dr. John Doe is a cardiologist.')
+  end
   subject { described_class.new(date_of_appointment: '2000-10-10', user: user, doctor: doctor) }
 
   it 'is valid with valid attributes' do
