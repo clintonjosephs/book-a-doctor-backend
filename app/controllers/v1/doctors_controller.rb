@@ -1,7 +1,28 @@
 class V1::DoctorsController < ApplicationController
   before_action :authorize_request, only: %i[index show create destroy]
 
-  def index; end
+  def index
+    @response = []
+    @doctors = Doctor.all
+    @serialized_doctors = DoctorSerializer.new(@doctors).serializable_hash[:data]
+
+    if !@serialized_doctors.empty?
+      @serialized_doctors.each do |doctor|
+        @response << {
+          id: doctor[:id],
+          name: doctor[:attributes][:name], 
+          city: doctor[:attributes][:city], 
+          specialization: doctor[:attributes][:specialization],
+          costPerDay: doctor[:attributes][:cost_per_day],
+          description: doctor[:attributes][:description],
+          imageUrl: doctor[:attributes][:image_url],
+        }
+      end
+      render json: { data: @response, message: ['All doctors loaded']} , status: :ok
+    else
+      render json: {error: 'not found', error_message: ['No doctors found']} , status: :not_found
+    end
+  end
 
   def show
     @doctor = Doctor.find(params[:id])

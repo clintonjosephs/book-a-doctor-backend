@@ -5,8 +5,25 @@ RSpec.describe 'V1::Doctors', type: :request do
   let(:access_token) { confirm_and_login_user }
 
   describe 'GET /index' do
-    pending "add some examples (or delete) #{__FILE__}"
+    describe 'GET /doctors' do
+      before do
+          m = 0
+          while m < 5
+            FactoryBot.create(:doctor); 
+            m += 1
+          end
+          get "/v1/doctors", headers: { 'Authorization' => "Bearer #{access_token}" }
+      end
+
+      it 'returns all doctors' do
+        json = JSON.parse(response.body)
+        expect(json['data'].length).to be >= 5
+        expect(json['message']).to eq(["All doctors loaded"])
+        expect(response).to have_http_status(:ok)
+      end
+    end
   end
+
 
   describe 'GET /doctors/:id' do
     before do
