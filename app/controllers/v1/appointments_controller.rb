@@ -6,14 +6,16 @@ class V1::AppointmentsController < ApplicationController
     @appointments = Appointment.where(user_id: @current_user.id)
     @serialized_doctors = AppointmentSerializer.new(@appointments).serializable_hash[:data]
     if @serialized_doctors.empty?
-      render json: { error: 'not found', error_message: ['No appointments found'], user: @appointments }, status: :not_found
+      render json: { error: 'not found', error_message: ['No appointments found'] }, status: :not_found
     else
       @serialized_doctors.each do |appointment|
         @response << {
           id: appointment[:id],
           doctor_id: appointment[:attributes][:doctor_id],
           user_id: appointment[:attributes][:user_id],
-          date_of_appointment: appointment[:attributes][:date_of_appointment]
+          date_of_appointment: appointment[:attributes][:date_of_appointment],
+          imageUrl: Doctor.find(appointment[:attributes][:doctor_id]).image_url
+
         }
       end
       render json: { data: @response, message: ['All appointments loaded'] }, status: :ok
