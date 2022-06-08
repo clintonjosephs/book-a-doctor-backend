@@ -19,7 +19,7 @@ RSpec.describe 'v1/users/', type: :request do
         user = User.create(name: 'test', email: 'test@test.com', password: 'helloWORLD')
         post v1_users_signup_path, params: { name: 'test', email: 'test@test.com', password: 'helloWORLD' }
         body = response.parsed_body
-        expect(body['error']).to eq('unauthorized')
+        expect(body['error']).to eq('forbidden')
         expect(body['error_message']['email']).to eq(['has already been taken'])
         user.destroy
       end
@@ -29,7 +29,7 @@ RSpec.describe 'v1/users/', type: :request do
       it 'return message error' do
         post v1_users_signup_path, params: { name: nil, email: 'test@test.com', password: 'helloWORLD' }
         body = response.parsed_body
-        expect(body['error']).to eq('unauthorized')
+        expect(body['error']).to eq('forbidden')
         expect(body['error_message']['name']).to eq(['can\'t be blank', 'is too short (minimum is 3 characters)'])
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe 'v1/users/', type: :request do
       it 'return message error' do
         post v1_users_signup_path, params: { name: 'test', email: nil, password: 'helloWORLD' }
         body = response.parsed_body
-        expect(body['error']).to eq('unauthorized')
+        expect(body['error']).to eq('forbidden')
         expect(body['error_message']['email']).to eq(['can\'t be blank'])
       end
     end
@@ -47,7 +47,7 @@ RSpec.describe 'v1/users/', type: :request do
       it 'return message error' do
         post v1_users_signup_path, params: { name: 'test', email: 'test@test.com', password: '' }
         body = response.parsed_body
-        expect(body['error']).to eq('unauthorized')
+        expect(body['error']).to eq('forbidden')
         expect(body['error_message']['password']).to eq(['can\'t be blank', 'is too short (minimum is 6 characters)'])
       end
     end
