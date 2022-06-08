@@ -45,6 +45,7 @@ class V1::DoctorsController < ApplicationController
   def destroy
     if @current_user.role == 'admin'
       @doctor = Doctor.find(params[:id])
+      p @doctor
       @doctor.destroy
       render json: { message: 'Doctor deleted successfully' }, status: :ok
     else
