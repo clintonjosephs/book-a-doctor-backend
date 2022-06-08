@@ -24,6 +24,7 @@ RSpec.describe 'V1::Doctors', type: :request do
 
     it 'returns no doctors found' do
       Doctor.destroy_all
+      get '/v1/doctors', headers: { 'Authorization' => "Bearer #{access_token}" }
       json = JSON.parse(response.body)
       expect(json['data'].nil?).to be true
       expect(json['error']).to eq('not found')
