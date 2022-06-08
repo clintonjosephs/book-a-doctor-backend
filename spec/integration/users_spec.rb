@@ -17,7 +17,7 @@ RSpec.describe 'v1/users', type: :request do
         response '200', 'user logged in' do
           @user = FactoryBot.create(:user)
           email = @user.email
-          let(:params) { { email: email, password: 'password' } }
+          let(:params) { { email:, password: 'password' } }
           run_test! do |response|
             data = JSON.parse(response.body)
             expect(data['token']).not_to be_empty
@@ -37,7 +37,7 @@ RSpec.describe 'v1/users', type: :request do
         response '401', 'Invalid password' do
           @user = FactoryBot.create(:user)
           email = @user.email
-          let(:params) { { email: email, password: 'invalidpassword' } }
+          let(:params) { { email:, password: 'invalidpassword' } }
           run_test! do |response|
             data = JSON.parse(response.body)
             expect(data['error_message'][0]).to eq('invalid password')
