@@ -31,7 +31,7 @@ class V1::UsersController < ApplicationController
                      exp: time,
                      user_details: UserSerializer.new(@user).serializable_hash[:data][:attributes] }, status: :ok
     else
-      render json: { error: 'unauthorized', error_message: @user.errors }, status: :unauthorized
+      render json: { error: 'forbidden', error_message: @user.errors }, status: :forbidden
     end
   end
 

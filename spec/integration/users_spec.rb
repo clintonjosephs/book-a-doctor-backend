@@ -62,7 +62,7 @@ RSpec.describe 'v1/users', type: :request do
           required: %w[name email password]
         }
 
-        response '200', 'user created' do
+        response '200', 'User created' do
           let(:user) { { name: 'John Doe', email: 'test@gmail.com', password: '123456' } }
           schema type: :object,
                  properties: {
@@ -82,7 +82,7 @@ RSpec.describe 'v1/users', type: :request do
           run_test!
         end
 
-        response '401', 'invalid request' do
+        response '403', 'Bad parameters' do
           let(:user) { { name: 'foo' } }
           schema type: :object,
                  properties: {
