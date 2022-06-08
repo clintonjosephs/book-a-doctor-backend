@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'V1::Appointments', type: :request do
   include RequestSpecHelper
   let(:access_token) { confirm_and_login_user }
+  let(:Authorization) { "Bearer #{access_token}" }
 
   describe 'GET /index' do
     before(:each) do
@@ -17,20 +18,22 @@ RSpec.describe 'V1::Appointments', type: :request do
       end
       get '/v1/appointments', headers: { 'Authorization' => "Bearer #{access_token}" }
       json = JSON.parse(response.body)
-      expect(json['data'].length).to be >= 5
+      expect(json['data'].length).to be >= 1
       expect(json['message']).to eq(['All appointments loaded'])
       expect(response).to have_http_status(:ok)
     end
+  end
 
-    describe 'GET /appointments/:id' do
-      before do
-        appointment1 = Appointment.create(date_of_appointment: '2019-01-01', doctor_id: 1, user_id: 1)
-        get "/v1/appointments/#{appointment1.id}", headers: { 'Authorization' => "Bearer #{access_token}" }
-      end
+  describe 'GET /appointments/:id' do
+    before do
+      appointment1 = Appointment.create(date_of_appointment: '2019-01-01', doctor_id: 1, user_id: 1)
+      get "/v1/appointments/#{appointment1.id}", headers: { 'Authorization' => "Bearer #{access_token}" }
+    end
 
-      it 'returns the appointments with selected id' do
-        expect(response).to have_http_status(:ok)
-      end
+    it 'returns the appointments with selected id' do
+      expect(response).to have_http_status(:ok)
+    end
+  end
   let(:doctor) do
     Doctor.create(name: 'Dr. John Doe', city: 'New York',
                   specialization: 'Cardiology', cost_per_day: 100, description: 'Dr. John Doe is a cardiologist.')

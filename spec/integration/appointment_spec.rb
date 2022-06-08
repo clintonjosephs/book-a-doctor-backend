@@ -7,11 +7,6 @@ RSpec.describe 'v1/appointments', type: :request do
   let(:Authorization) { "Bearer #{access_token}" }
 
   describe 'appointmentsAPI' do
-    before(:all) do
-      FactoryBot.create(:appointment)
-      FactoryBot.create(:appointment)
-    end
-
     path '/v1/appointments' do
       get 'Get all appointments' do
         tags 'Appointments'
@@ -32,7 +27,7 @@ RSpec.describe 'v1/appointments', type: :request do
                  }
           run_test! do |response|
             data = JSON.parse(response.body)
-            expect(data['data'].length).to be >= 5
+            expect(data['data'].length).to be >= 1
             expect(data['message']).to eq(['All appointments loaded'])
             expect(response).to have_http_status(:ok)
           end

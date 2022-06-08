@@ -3,10 +3,10 @@ class V1::AppointmentsController < ApplicationController
 
   def index
     @response = []
-    @appointments = Appointment.find_by_user_id(@current_user.id)
+    @appointments = Appointment.where(user_id: @current_user.id)
     @serialized_doctors = AppointmentSerializer.new(@appointments).serializable_hash[:data]
     if @serialized_doctors.empty?
-      render json: { error: 'not found', error_message: ['No appointments found'] }, status: :not_found
+      render json: { error: 'not found', error_message: ['No appointments found'], user: @appointments }, status: :not_found
     else
       @serialized_doctors.each do |appointment|
         @response << {

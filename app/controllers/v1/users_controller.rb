@@ -11,7 +11,7 @@ class V1::UsersController < ApplicationController
       if Password.new(@user.encrypted_password) == params[:password]
         token = JsonWebToken.encode(user_id: @user.id)
         time = Time.now + 24.hours.to_f
-        render json: { token:,
+        render json: { token: token,
                        exp: time,
                        user_details: UserSerializer.new(@user).serializable_hash[:data][:attributes] }, status: :ok
       else
@@ -27,7 +27,7 @@ class V1::UsersController < ApplicationController
     if @user.save
       token = JsonWebToken.encode(user_id: @user.id)
       time = Time.now + 24.hours.to_f
-      render json: { token:,
+      render json: { token: token,
                      exp: time,
                      user_details: UserSerializer.new(@user).serializable_hash[:data][:attributes] }, status: :ok
     else
