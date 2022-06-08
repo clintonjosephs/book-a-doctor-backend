@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'V1::Doctors', type: :request do
   include RequestSpecHelper
   let(:access_token) { confirm_and_login_user }
+  let(:user_access_token) { confirm_and_login_user('user') }
 
   describe 'GET /index' do
     before(:each) do
@@ -56,6 +57,25 @@ RSpec.describe 'V1::Doctors', type: :request do
       } }, headers: { 'Authorization' => "Bearer #{access_token}" }
 
       expect(response).to have_http_status(:created)
+    end
+  end
+
+  describe 'DELETE v1/doctors/:id' do
+    before(:each) do
+      @doctor1 = Doctor.create(name: 'Doctor 2', city: 'Skopje', specialization: 'nervs', cost_per_day: 30, description: 'h
+      eev ev ew v ewvewv')
+    end
+    it 'deletes a doctor with admin' do
+      delete "/v1/doctors/#{@doctor1.id}",
+             headers: { 'Authorization' => "Bearer #{access_token}" }
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('Doctor deleted successfully')
+    end
+    it 'deletes a doctor without admin' do
+      delete "/v1/doctors/#{@doctor1.id}",
+             headers: { 'Authorization' => "Bearer #{user_access_token}" }
+      expect(response).to have_http_status(:unauthorized)
+      expect(response.body).to include('you need admin permision')
     end
   end
 end
