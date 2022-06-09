@@ -11,7 +11,7 @@ class V1::AppointmentsController < ApplicationController
       @serialized_doctors.each do |appointment|
         @response << {
           id: appointment[:id],
-          doctor_id: appointment[:attributes][:doctor_id],
+          doctor: Doctor.find(appointment[:attributes][:doctor_id]),
           user_id: appointment[:attributes][:user_id],
           date_of_appointment: appointment[:attributes][:date_of_appointment],
           imageUrl: Doctor.find(appointment[:attributes][:doctor_id]).image_url
@@ -22,9 +22,10 @@ class V1::AppointmentsController < ApplicationController
     end
   end
 
-  def show
-    @appointment = Appointment.find(params[:id])
-    render json: AppointmentSerializer.new(@appointment).serializable_hash[:data][:attributes], status: :ok
+  def destroy
+    @appointment = Appointment.find(params[:id]).destroy!
+
+    render json: { data: @appointment, message: 'Appointment deleted' }, status: :ok
   end
 
   def create
@@ -37,8 +38,6 @@ class V1::AppointmentsController < ApplicationController
       render json: { error: 'forbidden', error_message: appointment.errors }, status: :forbidden
     end
   end
-
-  def destroy; end
 
   def appointment_params
     post_params = params.permit(:doctor_id, :date_of_appointment)
