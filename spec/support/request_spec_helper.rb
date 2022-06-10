@@ -11,4 +11,13 @@ module RequestSpecHelper
     post '/v1/users/login', params: { email: user.email, password: user.password }
     json['token']
   end
+
+  # this mathod was created because the confirm_and_login_user method
+  # create a doctor each time it is called and this makes
+  # the no doctors test always fail, please do not add any create method here
+  def test_for_no_doctors
+    user = FactoryBot.create(:user)
+    post '/v1/users/login', params: { email: user.email, password: user.password }
+    json['token']
+  end
 end

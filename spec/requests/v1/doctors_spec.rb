@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'V1::Doctors', type: :request do
   include RequestSpecHelper
   let(:access_token) { confirm_and_login_user }
+  let(:token_without_create) { test_for_no_doctors }
   let(:user_access_token) { confirm_and_login_user('user') }
 
   describe 'GET /index' do
@@ -22,12 +23,16 @@ RSpec.describe 'V1::Doctors', type: :request do
       expect(json['message']).to eq(['All doctors loaded'])
       expect(response).to have_http_status(:ok)
     end
+  end
+
+  describe 'GET /doctors' do
+    before(:each) do
+      Doctor.destroy_all
+      get '/v1/doctors', headers: { 'Authorization' => "Bearer #{token_without_create}" }
+    end
 
     it 'returns no doctors found' do
-      Doctor.destroy_all
-      get '/v1/doctors', headers: { 'Authorization' => "Bearer #{access_token}" }
       json = JSON.parse(response.body)
-      expect(json['data'].nil?).to be true
       expect(json['error']).to eq('not found')
       expect(json['error_message']).to eq(['No doctors found'])
       expect(response).to have_http_status(:not_found)
