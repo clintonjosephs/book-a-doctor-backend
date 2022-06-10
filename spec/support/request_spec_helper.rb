@@ -3,8 +3,8 @@ module RequestSpecHelper
     JSON.parse(response.body)
   end
 
-  def confirm_and_login_user
-    user = User.create(name: 'test', email: 'email@gmail.com', password: '123456', role: 'admin')
+  def confirm_and_login_user(user_role = 'admin')
+    user = User.create(name: 'test', email: 'email@gmail.com', password: '123456', role: user_role)
     doctor = Doctor.create(name: 'Dr. John Doe', city: 'New York',
                            specialization: 'Cardiology', cost_per_day: 100, description: 'Dr. John Doe is a cardiologist.')
     Appointment.create(date_of_appointment: '2000-09-07', doctor_id: doctor.id, user_id: user.id)
