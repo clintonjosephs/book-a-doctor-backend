@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe 'V1::Appointments', type: :request do
   include RequestSpecHelper
   let(:access_token) { confirm_and_login_user }
+  let(:access_token_invaid) { login_and_delete_user }
   let(:Authorization) { "Bearer #{access_token}" }
+  let(:user_token) { confirm_and_login_user }
 
   describe 'GET /index' do
     before(:each) do
@@ -46,6 +48,17 @@ RSpec.describe 'V1::Appointments', type: :request do
                                headers: { 'Authorization' => "Bearer #{access_token}" }
 
       expect(response).to have_http_status(:created)
+      doctor.destroy
+    end
+  end
+
+  describe 'POST v1/appointments' do
+    it 'Error token, the appointment is not created' do
+      doctor.save
+      post '/v1/appointments', params: { doctor_id: doctor.id, date_of_appointment: '2022/09/07' },
+                               headers: { 'Authorization' => "Bearer #{access_token_invaid}" }
+
+      expect(response).to have_http_status(:unauthorized)
       doctor.destroy
     end
   end
