@@ -129,7 +129,7 @@ RSpec.describe 'v1/users', type: :request do
         end
       end
 
-      response '401', 'doctor not found' do
+      response '401', 'Unathorized' do
         let(:Authorization) { 'Nil Token' }
         run_test!
       end
