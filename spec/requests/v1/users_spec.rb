@@ -105,10 +105,10 @@ RSpec.describe 'v1/users/', type: :request do
     end
   end
 
-  describe 'GET /get_current_user' do
+  describe 'GET /fetch_current_user' do
     context 'User details object is fetched successfully' do
       it 'returns user details object' do
-        get '/v1/users/get_current_user', headers: { 'Authorization' => "Bearer #{access_token}" }
+        get '/v1/users/fetch_current_user', headers: { 'Authorization' => "Bearer #{access_token}" }
         body = response.parsed_body
         expect(body['data'].nil?).to_not be true
         expect(body['data']['email'].nil?).to be false

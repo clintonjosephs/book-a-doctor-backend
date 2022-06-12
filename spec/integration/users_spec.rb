@@ -105,8 +105,8 @@ RSpec.describe 'v1/users', type: :request do
       end
     end
   end
-  
-  path '/v1/users/get_current_user' do
+
+  path '/v1/users/fetch_current_user' do
     get 'Fetch current user object' do
       tags 'Users'
       produces 'application/json', 'application/xml'
@@ -123,11 +123,11 @@ RSpec.describe 'v1/users', type: :request do
                  updated_at: { type: :string },
                  image: { type: :object }
                }
-          run_test! do |response|
-            json = JSON.parse(response.body)
-            expect(json['data'].nil?).to be false
-          end
+        run_test! do |response|
+          json = JSON.parse(response.body)
+          expect(json['data'].nil?).to be false
         end
+      end
 
       response '401', 'doctor not found' do
         let(:Authorization) { 'Nil Token' }
