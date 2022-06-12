@@ -35,6 +35,10 @@ class V1::UsersController < ApplicationController
     end
   end
 
+  def fetch_user_details
+    @current_user
+  end
+
   private
 
   def login_params
