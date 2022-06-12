@@ -35,8 +35,9 @@ class V1::UsersController < ApplicationController
     end
   end
 
-  def fetch_user_details
-    @current_user
+  def get_current_user
+    @user = User.find(@current_user.id)
+    render json: { data: UserSerializer.new(@user).serializable_hash[:data][:attributes] }, status: :ok
   end
 
   private

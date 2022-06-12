@@ -1,6 +1,11 @@
 require 'swagger_helper'
 
 RSpec.describe 'v1/users', type: :request do
+  include RequestSpecHelper
+
+  let(:access_token) { confirm_and_login_user }
+  let(:Authorization) { "Bearer #{access_token}" }
+
   describe 'Users Login API' do
     path '/v1/users/login' do
       post 'Login to get user details and jwt token' do
@@ -97,6 +102,36 @@ RSpec.describe 'v1/users', type: :request do
                  }
           run_test!
         end
+      end
+    end
+  end
+  
+  path '/v1/users/get_current_user' do
+    get 'Fetch current user object' do
+      tags 'Users'
+      produces 'application/json', 'application/xml'
+      security [Bearer: {}]
+      parameter name: :Authorization, in: :header, type: :string
+
+      response '200', 'current user has been found' do
+        schema type: :object,
+               properties: {
+                 name: { type: :string },
+                 email: { type: :string },
+                 image_url: { type: :string },
+                 created_at: { type: :string },
+                 updated_at: { type: :string },
+                 image: { type: :object }
+               }
+          run_test! do |response|
+            json = JSON.parse(response.body)
+            expect(json['data'].nil?).to be false
+          end
+        end
+
+      response '401', 'doctor not found' do
+        let(:Authorization) { 'Nil Token' }
+        run_test!
       end
     end
   end
