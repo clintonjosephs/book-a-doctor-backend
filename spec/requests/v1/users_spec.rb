@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'v1/users/', type: :request do
+  include RequestSpecHelper
+  let(:access_token) { confirm_and_login_user }
+  let(:Authorization) { "Bearer #{access_token}" }
+
   describe 'POST /create' do
     context 'with valid parameters' do
       it 'return the token and user info' do
@@ -97,6 +101,17 @@ RSpec.describe 'v1/users/', type: :request do
         body = response.parsed_body
         expect(body['error']).to eq('unauthorized')
         expect(body['error_message'][0]).to eq('invalid password')
+      end
+    end
+  end
+
+  describe 'GET /fetch_current_user' do
+    context 'User details object is fetched successfully' do
+      it 'returns user details object' do
+        get '/v1/users/fetch_current_user', headers: { 'Authorization' => "Bearer #{access_token}" }
+        body = response.parsed_body
+        expect(body['data'].nil?).to_not be true
+        expect(body['data']['email'].nil?).to be false
       end
     end
   end
