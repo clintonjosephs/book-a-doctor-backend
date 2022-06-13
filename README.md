@@ -23,7 +23,7 @@
 
 - Major languages (Ruby)
 - Framworks (Ruby on Rails)
-- Testing library (Respec)
+- Testing library (Rspec)
 - API docs (Rswag)
 
 ## Live version
