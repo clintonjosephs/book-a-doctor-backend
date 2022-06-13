@@ -63,6 +63,18 @@ RSpec.describe 'V1::Doctors', type: :request do
 
       expect(response).to have_http_status(:created)
     end
+
+    it 'not creates a doctor' do
+      post '/v1/doctors', params: { doctor: {
+        name: 'Doctor 2',
+        city: 'Skopje',
+        specialization: 'nervs',
+        cost_per_day: 30,
+        description: 'description'
+      } }, headers: { 'Authorization' => "Bearer #{user_access_token}" }
+
+      expect(response).to have_http_status(:unauthorized)
+    end
   end
 
   describe 'DELETE v1/doctors/:id' do

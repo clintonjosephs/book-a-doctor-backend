@@ -42,10 +42,6 @@ class V1::UsersController < ApplicationController
 
   private
 
-  def login_params
-    params.permit(:email, :password)
-  end
-
   def signup_params
     params.permit(:name, :email, :password, :password_confirmation, :image, :image_url)
   end
