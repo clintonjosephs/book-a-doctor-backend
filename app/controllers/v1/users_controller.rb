@@ -35,6 +35,11 @@ class V1::UsersController < ApplicationController
     end
   end
 
+  def fetch_current_user
+    @user = User.find(@current_user.id)
+    render json: { data: UserSerializer.new(@user).serializable_hash[:data][:attributes] }, status: :ok
+  end
+
   private
 
   def signup_params

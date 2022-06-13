@@ -58,9 +58,41 @@ paths:
                     type: array
                   date_of_appointment:
                     type: array
+    get:
+      summary: Get all appointments
+      tags:
+      - Appointments
+      consumes:
+      - application/json
+      - application/xml
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        type: string
+      responses:
+        '200':
+          description: appointment get all
+          schema:
+            type: object
+            properties:
+              message:
+                type: array
+              data:
+                type: array
+                properties:
+                  id:
+                    type: integer
+                  date_of_appointment:
+                    type: string
+                  doctor_id:
+                    type: integer
+                  user_id:
+                    type: integer
   "/v1/doctors/{id}":
     get:
-      summary: Retrieves a doctor
+      summary: show doctor
       tags:
       - Doctors
       produces:
@@ -78,34 +110,23 @@ paths:
         required: true
       responses:
         '200':
-          description: name found
-          schema:
-            type: object
-            properties:
-              id:
-                type: integer
-              name:
-                type: string
-              city:
-                type: string
-              specialization:
-                type: string
-              cost_per_day:
-                type: integer
-              description:
-                type: string
-            required:
-            - id
-            - name
-            - city
-            - specialization
-            - cost_per_day
-            - description
+          description: successful
         '404':
           description: doctor not found
+    parameters:
+    - name: id
+      in: path
+      type: string
+      description: id
+      required: true
+    delete:
+      summary: delete doctor
+      responses:
+        '200':
+          description: successful
   "/v1/doctors":
     post:
-      summary: Creates a docotor
+      summary: create doctor
       tags:
       - Doctors
       consumes:
@@ -145,8 +166,10 @@ paths:
           description: doctor created
         '422':
           description: invalid request
+        '200':
+          description: successful
     get:
-      summary: Get all doctors
+      summary: list doctors
       tags:
       - All doctors
       consumes:
@@ -160,29 +183,7 @@ paths:
         type: string
       responses:
         '200':
-          description: All doctors fetched
-          schema:
-            type: object
-            properties:
-              message:
-                type: array
-              data:
-                type: array
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
-                  city:
-                    type: string
-                  specialization:
-                    type: string
-                  costPerDay:
-                    type: integer
-                  imageUrl:
-                    type: string
-                  description:
-                    type: string
+          description: successful
   "/v1/users/login":
     post:
       summary: Login to get user details and jwt token
@@ -234,7 +235,7 @@ paths:
           - password
       responses:
         '200':
-          description: user created
+          description: User created
           schema:
             type: object
             properties:
@@ -257,8 +258,8 @@ paths:
                     type: string
                   role:
                     type: string
-        '401':
-          description: invalid request
+        '403':
+          description: Bad parameters
           schema:
             type: object
             properties:
