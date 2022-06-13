@@ -1,12 +1,12 @@
 ![](https://img.shields.io/badge/goldensquad-orange)
 
-# Book Appoinments Backend
+# Book Appointments Backend
 
-> Book Appoinments backend is rails backend application for doctor book appoinemnts. This applications take works for API endpoints and users can load, create, and delete doctors and reservations. Users need to sign up or sign in to access the API endponits. They can sign up or sign in using the API endponts.
+> Book Appointments backend is rails backend application for doctor book appoinemnts. This applications take works for API endpoints and users can load, create, and delete doctors and reservations. Users need to sign up or sign in to access the API endponits. They can sign up or sign in using the API endponts.
 
 ## Front End Repo
 
-[Book Appoinments Frontend](https://github.com/clintonjosephs/book-a-doctor-frontend)
+[Book Appointments Frontend](https://github.com/clintonjosephs/book-a-doctor-frontend)
 
 ## Kanban Board
 [Kanban Board](https://github.com/clintonjosephs/book-a-doctor-backend/projects/1)
