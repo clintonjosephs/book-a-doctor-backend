@@ -75,3 +75,5 @@ group :development do
 end
 
 gem 'jsonapi-serializer', '~> 2.2'
+
+gem 'simplecov', require: false, group: :test
