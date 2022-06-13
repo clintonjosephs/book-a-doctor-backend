@@ -1,10 +1,10 @@
-![](https://img.shields.io/badge/thecodechaser-blueviolet)
+![](https://img.shields.io/badge/goldensquad-orange)
 
 # Book Appoinments Backend
 
 > Book Appoinments backend is rails backend application for doctor book appoinemnts. This applications take works for API endpoints and users can load, create, and delete doctors and reservations. Users need to sign up or sign in to access the API endponits. They can sign up or sign in using the API endponts.
 
-## Link to the front end
+## Front End Repo
 
 [Book Appoinments Frontend](https://github.com/clintonjosephs/book-a-doctor-frontend)
 
@@ -28,7 +28,7 @@
 
 ## Live version
 
-[Book-Appoinments-Backend]()
+[In progress]
 
 ## Getting Started
 
@@ -71,7 +71,7 @@ rails db:seed
 Start server with:
 
 ```
-rails server
+rails server -p 3001
 ```
 
 Visit http://localhost:3001/ in your browser.
@@ -81,7 +81,7 @@ Visit http://localhost:3001/ in your browser.
 Install npm with:
 
 ```
-npm i
+npm install
 ```
 
 Install rspec with:
@@ -105,7 +105,7 @@ rspec spec
 ### Open API documentation
 
 ```
-rails server
+rails rswag:specs:swaggerize
 ```
 
 Visit http://localhost:3001/api-docs in your browser.
@@ -113,10 +113,6 @@ Visit http://localhost:3001/api-docs in your browser.
 ## Visit And Open Files
 
 [Visit Repo](https://github.com/clintonjosephs/book-a-doctor-backend)
-
-## Download Repo
-
-[Download Repo](https://github.com/clintonjosephs/book-a-doctor-backend.git)
 
 
 ## Team Members
@@ -136,8 +132,7 @@ Visit http://localhost:3001/api-docs in your browser.
 👤 **Jihane Aflih**
 
 - GitHub: [@jaflih](https://github.com/jaflih)
-- Twitter: []()
-- LinkedIn: []()
+- LinkedIn: [@jaflih](https://www.linkedin.com/in/jaflih/)
 
 👤 **NURI LACKA**
 
