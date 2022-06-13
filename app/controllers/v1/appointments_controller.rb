@@ -24,7 +24,11 @@ class V1::AppointmentsController < ApplicationController
 
   def destroy
     @appointment = User.find(@current_user.id).appointments.find(params[:id]).destroy!
-    render json: { data: @appointment, message: 'Appointment deleted' }, status: :ok
+    if @appointment.destroyed?
+      render json: { data: @appointment, message: ['Appointment deleted'] }, status: :ok
+    else
+      render json: { error: 'not found', error_message: ['Appointment not found'] }, status: :not_found
+    end
   end
 
   def create
