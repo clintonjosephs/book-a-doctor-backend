@@ -23,8 +23,7 @@ class V1::AppointmentsController < ApplicationController
   end
 
   def destroy
-    @appointment = Appointment.find(params[:id]).destroy!
-
+    @appointment = User.find(@current_user.id).appointments.find(params[:id]).destroy!
     render json: { data: @appointment, message: 'Appointment deleted' }, status: :ok
   end
 
