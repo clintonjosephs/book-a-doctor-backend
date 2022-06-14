@@ -50,9 +50,12 @@ RSpec.describe 'V1::Appointments', type: :request do
                   specialization: 'Cardiology', cost_per_day: 100, description: 'Dr. John Doe is a cardiologist.')
   end
 
+  let(:user) do
+    User.create(name: 'test', email: 'emaildeletee1@gmail.com', password: '123456')
+  end
+
   describe 'DELETE v1/appointments/:id' do
     it 'delete appointment' do
-      user = User.create(name: 'test', email: 'emaildeletee@gmail.com', password: '123456')
       appointment = Appointment.create(date_of_appointment: '2019-01-01', doctor_id: doctor.id, user_id: user.id)
       post '/v1/users/login', params: { email: user.email, password: user.password }
 
@@ -64,7 +67,7 @@ RSpec.describe 'V1::Appointments', type: :request do
 
   describe 'DELETE v1/appointments/:id' do
     it 'can not delete appointment (bad user)' do
-      appointment = Appointment.create(date_of_appointment: '2019-01-01', doctor_id: doctor.id, user_id: 1)
+      appointment = Appointment.create(date_of_appointment: '2019-01-01', doctor_id: doctor.id, user_id: user.id)
 
       delete "/v1/appointments/#{appointment.id}", headers: { 'Authorization' => "Bearer #{access_token}" }
 
@@ -73,8 +76,8 @@ RSpec.describe 'V1::Appointments', type: :request do
   end
 
   describe 'DELETE v1/appointments/:id' do
-    it 'can not delete appointment (bas appointment)' do
-      appointment = Appointment.create(date_of_appointment: '2019-01-01', doctor_id: doctor.id, user_id: 1)
+    it 'can not delete appointment (bad appointment)' do
+      appointment = Appointment.create(date_of_appointment: '2019-01-01', doctor_id: doctor.id, user_id: user.id)
       appointment.delete
 
       delete "/v1/appointments/#{appointment.id}", headers: { 'Authorization' => "Bearer #{access_token}" }
