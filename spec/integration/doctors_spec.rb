@@ -78,7 +78,7 @@ RSpec.describe 'v1/doctors', type: :request do
                    error_message: { type: :array }
                  }
 
-          let(:id) { '123' }
+          let(:id) { 'invalid' }
           run_test!
         end
       end
