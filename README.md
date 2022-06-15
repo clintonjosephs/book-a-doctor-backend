@@ -12,7 +12,7 @@
 [Kanban Board](https://github.com/clintonjosephs/book-a-doctor-backend/projects/1)
 
 ## Initial state Of Kanban Board
-[Initial Kanban Board]()
+[Initial Kanban Board](https://github.com/clintonjosephs/book-a-doctor-backend/issues/15)
 
 
 > ***We are a group of five***
