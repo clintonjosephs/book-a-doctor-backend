@@ -1,4 +1,4 @@
-# spec/integration/doctors_spec.rb
+# rubocop:disable Metrics/BlockLength
 require 'swagger_helper'
 
 RSpec.describe 'v1/doctors', type: :request do
@@ -78,14 +78,14 @@ RSpec.describe 'v1/doctors', type: :request do
                    error_message: { type: :array }
                  }
 
-          let(:id) { '123' }
+          let(:id) { 'invalid' }
           run_test!
         end
       end
     end
 
     path '/v1/doctors' do
-      post 'Creates a docotor' do
+      post 'Creates a doctor' do
         tags 'Doctors'
         consumes 'application/json', 'application/xml'
         security [Bearer: {}]
@@ -107,6 +107,18 @@ RSpec.describe 'v1/doctors', type: :request do
           let(:doctor) do
             { name: 'docy', city: 'Struga', specialization: 'urology', cost_per_day: 24, description: 'description' }
           end
+          schema type: :object,
+                 properties: {
+
+                   id: { type: :integer },
+                   name: { type: :string },
+                   city: { type: :string },
+                   specialization: { type: :string },
+                   costPerDay: { type: :integer },
+                   imageUrl: { type: :string, nullable: true },
+                   description: { type: :string }
+                 }
+
           run_test!
         end
 
@@ -115,11 +127,8 @@ RSpec.describe 'v1/doctors', type: :request do
           run_test!
         end
       end
-    end
-
-    path '/v1/doctors' do
       get 'Get all doctors' do
-        tags 'All doctors'
+        tags 'Doctors'
         consumes 'application/json', 'application/xml'
         security [Bearer: {}]
         parameter name: :Authorization, in: :header, type: :string
@@ -127,17 +136,19 @@ RSpec.describe 'v1/doctors', type: :request do
         response '200', 'All doctors fetched' do
           schema type: :object,
                  properties: {
-                   message: { type: :array },
+                   message: { type: :array,
+                              items: { type: :string } },
                    data: { type: :array,
-                           properties: {
-                             id: { type: :integer },
-                             name: { type: :string },
-                             city: { type: :string },
-                             specialization: { type: :string },
-                             costPerDay: { type: :integer },
-                             imageUrl: { type: :string },
-                             description: { type: :string }
-                           } }
+                           items: { type: :object,
+                                    properties: {
+                                      id: { type: :string },
+                                      name: { type: :string },
+                                      city: { type: :string },
+                                      specialization: { type: :string },
+                                      costPerDay: { type: :integer },
+                                      imageUrl: { type: :string, nullable: true },
+                                      description: { type: :string }
+                                    } } }
 
                  }
           run_test! do |response|
@@ -147,14 +158,16 @@ RSpec.describe 'v1/doctors', type: :request do
           end
         end
 
-        response '201', 'No doctors found' do
+        response '404', 'No doctors found' do
           schema type: :object,
                  properties: {
                    error: { type: :string },
-                   error_message: { type: :array }
+                   error_message: { type: :array,
+                                    items: { type: :string } }
                  }
         end
       end
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
